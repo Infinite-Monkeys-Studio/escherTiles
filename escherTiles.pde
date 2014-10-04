@@ -2,22 +2,31 @@ ArrayList<PVector> points;
 PShape shape;
 int selected;
 static float POINT_SELECT_RANGE = 5;
-
+static int SCALE = 200;
+static PVector SCALE_VECTOR = new PVector(SCALE, SCALE);
 void setup() {
   size(800,600, P2D);
   points = new ArrayList<PVector>();
-  points.add(new PVector(10,10));
-//  points.add(new PVector(10,20));
-  points.add(new PVector(10,30));
-//  points.add(new PVector(10,40));
-  points.add(new PVector(10,50));
+  points.add(new PVector( 0,  0));
+  points.add(new PVector(SCALE / 2,  0));
+  points.add(new PVector(SCALE,  0));
+  points.add(new PVector(SCALE, SCALE / 2));
+  points.add(new PVector(SCALE, SCALE));
+  for(PVector p : points) {
+    p.add(SCALE_VECTOR);
+  }
   shape = getShape();
 }
 
 void draw() {
   background(167);
-  shape(shape, 0,0);
   drawPoints();
+  translate(-SCALE, -SCALE);
+  for(int x = 0; x < width; x += SCALE) {
+    for(int y = 0; y < height; y += SCALE) {
+      shape(shape, x, y);
+    }
+  }
 }
 
 void mousePressed() {
