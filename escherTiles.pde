@@ -35,7 +35,8 @@ void draw() {
   translate(-SCALE, -SCALE);
   for(int x = 0; x < width; x += SCALE) {
     for(int y = 0; y < height; y += SCALE) {
-      shape(shape, x, y);
+      shape(horizontal, x, y);
+      shape(vertical, x, y);
     }
   }
 }
