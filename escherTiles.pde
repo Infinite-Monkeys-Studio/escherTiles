@@ -1,6 +1,7 @@
 ArrayList<PVector> horizontalPoints, verticalPoints;
 PShape horizontal, vertical;
 int selected;
+boolean selectedListIsHor = true;
 
 static float POINT_SELECT_RANGE = 5;
 static int SCALE = 200;
@@ -42,20 +43,46 @@ void draw() {
 }
 
 void mousePressed() {
-  PVector tempMouse = mouseVector();
-  PVector h = getClosestPoint(tempMouse, horizontalPoints);
-  PVector v = getClosestPoint(tempMouse, verticalPoints);
-  if(h.dist(tempMouse) > v.dist(tempMouse)) {
-    
+  PVector mouseLocation = mouseVector();
+  
+  PVector closestPointInHorizontal = getClosestPoint(mouseLocation, horizontalPoints);
+  PVector closestPointInVertical = getClosestPoint(mouseLocation, verticalPoints);
+  PVector currentPoint, secondaryPoint;
+  ArrayList<PVector> testList = new ArrayList<PVector>();
+  
+  if(closestPointInHorizontal.dist(mouseLocation) > closestPointInVertical.dist(mouseLocation))
+    currentPoint = closestPointInVertical;
+  else
+    currentPoint = closestPointInHorizontal;
+     
+  if(currentPoint.dist(mouseLocation) > POINT_SELECT_RANGE) {e
+    if(horizontalPoints.contains(s)) {
+      int index = horizontalPoints.indexOf(currentPoint);
+      testList.add(horizontalPoints.get(index + 1));
+      testList.add(horizontalPoints.get(index - 1));
+      secondaryPoint = getClosestPoint(mouseLocation, testList);
+      int secIndex = horizontalPoints.indexOf(secondaryPoint);
+      
+      makeNewPoint(currentPoint, index, secIndex, horizontalPoints);
+    } else {
+      int index = verticalPoints.indexOf(currentPoint);
+      testList.add(verticalPoints.get(index + 1));
+      testList.add(verticalPoints.get(index - 1));
+      secondaryPoint = getClosestPoint(mouseLocation, testList);
+      int secIndex = verticalPoints.indexOf(secondaryPoint);
+      
+      makeNewPoint(currentPoint, index, secIndex, verticalPoints);
+    }
   } else {
-    
-  }
-  if(p != null) {
-    selected = points.indexOf(p);
-    points.set(selected, tempMouse);
-    shape = getShape();
-  } else {
-    makeNewPoint(tempMouse);
+    if(horizontalPoints.contains(s)) {
+      selected = horizontalPoints.indexOf(s);
+      horizontalPoints.set(selected, tempMouse);
+      shape = getShape();
+    } else {
+      selected = verticalPoints.indexOf(s);
+      verticalPoints.set(selected, tempMouse);
+      shape = getShape();
+    }  
   }
 }
 
@@ -97,13 +124,9 @@ PVector[] getClosestSegment(PVector input, ArrayList<PVector> list) {
   return new PVector[]{first, secound};
 }
 
-void makeNewPoint(PVector tempMouse) {
-  PVector first = getPoint(tempMouse, false, false);
-  PVector secound = getPoint(tempMouse, true, false);
-  int findex = points.indexOf(first);
-  int sindex = points.indexOf(secound);
-  int newIndex = (findex > sindex) ? findex : sindex;
-  points.add(newIndex, tempMouse);
+void makeNewPoint(PVector newPoint, int first, int secound, ArrayList<PVector> list) {
+  int newIndex = (first > secound) ? first : secound;
+  list.add(newIndex, newPoint);
   selected = newIndex;
 }
 
