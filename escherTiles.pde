@@ -49,13 +49,7 @@ void mousePressed() {
     points.set(selected, tempMouse);
     shape = getShape();
   } else {
-    PVector first = getPoint(tempMouse, false, false);
-    PVector secound = getPoint(tempMouse, true, false);
-    int findex = points.indexOf(first);
-    int sindex = points.indexOf(secound);
-    int newIndex = (findex > sindex) ? findex : sindex;
-    points.add(newIndex, tempMouse);
-    selected = newIndex;
+    makeNewPoint(tempMouse);
   }
 }
 
@@ -83,6 +77,16 @@ PVector getPoint(PVector input, boolean getSecound, boolean useRange) {
   if(getSecound)
     return mem[1];
   return out; 
+}
+
+void makeNewPoint(PVector tempMouse) {
+  PVector first = getPoint(tempMouse, false, false);
+  PVector secound = getPoint(tempMouse, true, false);
+  int findex = points.indexOf(first);
+  int sindex = points.indexOf(secound);
+  int newIndex = (findex > sindex) ? findex : sindex;
+  points.add(newIndex, tempMouse);
+  selected = newIndex;
 }
 
 PVector mouseVector() {
