@@ -43,7 +43,13 @@ void draw() {
 
 void mousePressed() {
   PVector tempMouse = mouseVector();
-  PVector p = getPoint(tempMouse, false, true);
+  PVector h = getClosestPoint(tempMouse, horizontalPoints);
+  PVector v = getClosestPoint(tempMouse, verticalPoints);
+  if(h.dist(tempMouse) > v.dist(tempMouse)) {
+    
+  } else {
+    
+  }
   if(p != null) {
     selected = points.indexOf(p);
     points.set(selected, tempMouse);
@@ -57,27 +63,6 @@ void mouseDragged() {
   points.set(selected, mouseVector());
   shape = getShape();
 }
-
-//PVector getPoint(PVector input, boolean getSecound, boolean useRange) {
-//  PVector[] mem = new PVector[2];
-//  float dist;
-//  if(useRange)
-//    dist = POINT_SELECT_RANGE;
-//  else
-//    dist = 1000000000;
-//  PVector out = null;
-//  for(PVector p : points) {
-//    float tdist = p.dist(input);
-//    if(dist > tdist){
-//      dist = tdist;
-//      mem[1] = mem[0];
-//      mem[0] = out = p;
-//    }
-//  }
-//  if(getSecound)
-//    return mem[1];
-//  return out; 
-//}
 
 PVector getClosestPoint(PVector input, ArrayList<PVector> list) {
   float dist;
@@ -94,12 +79,11 @@ PVector getClosestPoint(PVector input, ArrayList<PVector> list) {
 
 PVector getSecoundClosestPoint(PVector input, ArrayList<PVector> list) {
   float dist;
-  PVector smallest = null;
-  PVector secoundSmallest = null;
-  
+  PVector out = null;
+  PVector smallest = getClosestPoint(input, list);
   for(PVector p : list) {
     float tdist = p.dist(input);
-    if(tdist < dist){
+    if(tdist < dist && p != smallest){
       dist = tdist;
       out = p;
     }
@@ -107,8 +91,10 @@ PVector getSecoundClosestPoint(PVector input, ArrayList<PVector> list) {
   return out;
 }
 
-PVector getClosestSegment(PVector input, ArrayList<PVector> list) {
-  getClosestPoint(input, list);
+PVector[] getClosestSegment(PVector input, ArrayList<PVector> list) {
+  PVector first = getClosestPoint(input, list);
+  PVector secound = getSecoundClosestPoint(input, list);
+  return new PVector[]{first, secound};
 }
 
 void makeNewPoint(PVector tempMouse) {
