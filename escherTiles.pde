@@ -58,25 +58,57 @@ void mouseDragged() {
   shape = getShape();
 }
 
-PVector getPoint(PVector input, boolean getSecound, boolean useRange) {
-  PVector[] mem = new PVector[2];
+//PVector getPoint(PVector input, boolean getSecound, boolean useRange) {
+//  PVector[] mem = new PVector[2];
+//  float dist;
+//  if(useRange)
+//    dist = POINT_SELECT_RANGE;
+//  else
+//    dist = 1000000000;
+//  PVector out = null;
+//  for(PVector p : points) {
+//    float tdist = p.dist(input);
+//    if(dist > tdist){
+//      dist = tdist;
+//      mem[1] = mem[0];
+//      mem[0] = out = p;
+//    }
+//  }
+//  if(getSecound)
+//    return mem[1];
+//  return out; 
+//}
+
+PVector getClosestPoint(PVector input, ArrayList<PVector> list) {
   float dist;
-  if(useRange)
-    dist = POINT_SELECT_RANGE;
-  else
-    dist = 1000000000;
   PVector out = null;
-  for(PVector p : points) {
+  for(PVector p : list) {
     float tdist = p.dist(input);
-    if(dist > tdist){
+    if(tdist < dist){
       dist = tdist;
-      mem[1] = mem[0];
-      mem[0] = out = p;
+      out = p;
     }
   }
-  if(getSecound)
-    return mem[1];
-  return out; 
+  return out;
+}
+
+PVector getSecoundClosestPoint(PVector input, ArrayList<PVector> list) {
+  float dist;
+  PVector smallest = null;
+  PVector secoundSmallest = null;
+  
+  for(PVector p : list) {
+    float tdist = p.dist(input);
+    if(tdist < dist){
+      dist = tdist;
+      out = p;
+    }
+  }
+  return out;
+}
+
+PVector getClosestSegment(PVector input, ArrayList<PVector> list) {
+  getClosestPoint(input, list);
 }
 
 void makeNewPoint(PVector tempMouse) {
