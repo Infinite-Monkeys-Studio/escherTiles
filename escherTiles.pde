@@ -1,21 +1,32 @@
-ArrayList<PVector> points;
-PShape shape;
+ArrayList<PVector> horizontalPoints, verticalPoints;
+PShape horizontal, vertical;
 int selected;
+
 static float POINT_SELECT_RANGE = 5;
 static int SCALE = 200;
 static PVector SCALE_VECTOR = new PVector(SCALE, SCALE);
+
 void setup() {
   size(800,600, P2D);
-  points = new ArrayList<PVector>();
-  points.add(new PVector( 0,  0));
-  points.add(new PVector(SCALE / 2,  0));
-  points.add(new PVector(SCALE,  0));
-  points.add(new PVector(SCALE, SCALE / 2));
-  points.add(new PVector(SCALE, SCALE));
-  for(PVector p : points) {
+  
+  horizontalPoints = new ArrayList<PVector>();
+  horizontalPoints.add(new PVector(0, 0));
+  horizontalPoints.add(new PVector(SCALE / 2,  0));
+  horizontalPoints.add(new PVector(SCALE,  0));
+  for(PVector p : horizontalPoints) {
     p.add(SCALE_VECTOR);
   }
-  shape = getShape();
+  
+  verticalPoints = new ArrayList<PVector>();
+  verticalPoints.add(new PVector(0, 0));
+  verticalPoints.add(new PVector(0, SCALE / 2));
+  verticalPoints.add(new PVector(0, SCALE));
+  for(PVector p : verticalPoints) {
+    p.add(SCALE_VECTOR);
+  }
+  
+  horizontal = getShape(horizontalPoints);
+  vertical = getShape(verticalPoints);
 }
 
 void draw() {
@@ -84,7 +95,7 @@ void drawPoints() {
   }
 }
 
-PShape getShape() {
+PShape getShape(ArrayList<PVector> points) {
   PShape s = createShape();
   s.beginShape();
   s.noFill();
