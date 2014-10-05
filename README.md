@@ -5,8 +5,8 @@ This allows you to create your own Tessellate tiles.
 Drag the points around.  
   
 Bugs:
-* Corners do not line up  
-* Creating new points is broken  
+* Corners are not forced to line up  
+* Can't delete points
   
 Things to be added:
 * Saving  
