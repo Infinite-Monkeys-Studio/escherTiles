@@ -4,7 +4,7 @@ int selected;  // the index of the point to be dragged, or -1 if none is nearby
 boolean selectedListIsHor = true;
 
 static float POINT_SELECT_RANGE = 5;
-static int SCALE = 200;
+static int SCALE = 100;
 static PVector SCALE_VECTOR = new PVector(SCALE, SCALE);
 static float bestSoFar = 0;             // this is used by getPositionToInsertNewPoint
 
@@ -114,6 +114,11 @@ PVector getClosestPoint(PVector input, ArrayList<PVector> list) {
   return out;
 }
 
+void keyTyped() {
+  if(key == 's') {
+   // save();
+  }
+}
 
 /**
 * This tests if the distance from the point to any segment of the list is less than "bestSoFar"
@@ -211,3 +216,51 @@ PShape getShape(ArrayList<PVector> points) {
   s.endShape();
   return s;
 }
+
+//void save() {
+//  int docWidth = width;
+//  int docHeight = height;
+//  String name = "test";
+//  OutputStream output = createOutput(name);
+//  
+//  output.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE svg>\n<svg width=\""); // default svg header
+//  output.write(docWidth.toString());
+//  output.write("px\" height=\""); //see the example svg to see what is going on
+//  output.write(docHeight.toString());
+//  output.write("px\"  xmlns=\"http://www.w3.org/2000/svg\">\n    <g>"); // the rest of the svg header
+//  
+//  //This is the output for a line in svg
+//  //<line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+//  
+//  for(int i = 0; i < horizontal.getVertexCount(); i++) { // loop through every vertex in the shape
+//    PVector p1 = horizontal.getVertex(i);
+//    PVector p2 = horizontal.getVertex(i + 1);
+//    
+//    String tempWrite = "<line x1=\"" + p1.x +
+//                       "\" y1=\"" + p1.y + 
+//                       "\" x2=\"" + p2.x + 
+//                       "\" y2=\"" + p2.y +
+//                       "\" style=\"stroke:rgb(255,0,0);stroke-width:2\" />"
+//                       ;
+//    output.write(tempWrite.getBytes());
+//  }
+//  
+//  for(int i = 0; i < vertical.getVertexCount(); i++) { // loop through every vertex in the shape
+//    PVector p1 = vertical.getVertex(i);
+//    PVector p2 = vertical.getVertex(i + 1);
+//    
+//    output.write(
+//      "<line x1=\"" + p1.x +
+//      "\" y1=\"" + p1.y + 
+//      "\" x2=\"" + p2.x + 
+//      "\" y2=\"" + p2.y +
+//      "\" style=\"stroke:rgb(255,0,0);stroke-width:2\" />"
+//    );
+//  }
+//  
+//  output.write("</g>\n</svg>");
+//  output.flush();
+//  output.close();
+//  
+//  println("File saved as: " + name);
+//}
