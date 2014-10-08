@@ -1,45 +1,36 @@
 ArrayList<PVector> horizontalPoints, verticalPoints;
 PShape horizontal, vertical;
+Side[] sides;
 int selected;  // the index of the point to be dragged, or -1 if none is nearby
 boolean selectedListIsHor = true;
 
 static float POINT_SELECT_RANGE = 5;
 static int SCALE = 100;
-static PVector SCALE_VECTOR = new PVector(SCALE, SCALE);
+static PVector SCALE_VECTOR = new PVector(SCALE, SCALE); //This is redundent
 static float bestSoFar = 0;             // this is used by getPositionToInsertNewPoint
 
 
 void setup() {
   size(800,600, P2D);
   
-  horizontalPoints = new ArrayList<PVector>();
-  horizontalPoints.add(new PVector(0, 0));
-  horizontalPoints.add(new PVector(SCALE / 2,  0));
-  horizontalPoints.add(new PVector(SCALE,  0));
-  for(PVector p : horizontalPoints) {
-    p.add(SCALE_VECTOR);
-  }
+  sides = new Sides[2]; // this hard codes two sides
+  sides[0] = new Side(new PVector(0, 0), new PVector(SCALE,  0)); // Makes a new side with a length of SCALE
+  sides[0].addPoint(1, new PVector(SCALE / 2,  0)); // Makes a point in the middle
   
-  verticalPoints = new ArrayList<PVector>();
-  verticalPoints.add(new PVector(0, 0));
-  verticalPoints.add(new PVector(0, SCALE / 2));
-  verticalPoints.add(new PVector(0, SCALE));
-  for(PVector p : verticalPoints) {
-    p.add(SCALE_VECTOR);
-  }
-  
-  horizontal = getShape(horizontalPoints);
-  vertical = getShape(verticalPoints);
+  sides[1] = new Side(new PVector(0, 0), new PVector(0, SCALE));
+  sides[1].addPoint(1, new PVector(0, SCALE / 2));
 }
 
 void draw() {
   background(167);
-  drawPoints();
-  translate(-SCALE, -SCALE);
-  for(int x = 0; x < width; x += SCALE) {
-    for(int y = 0; y < height; y += SCALE) {
-      shape(horizontal, x, y);
-      shape(vertical, x, y);
+  drawPoints(); // combine with the other drawing
+  translate(-SCALE, -SCALE); // Start drawing away from the corner
+  for(Side side : Sides[]) {
+    Shape shape = side.getShape();
+    for(int x = 0; x < width; x += SCALE) {
+      for(int y = 0; y < height; y += SCALE) {
+        shape(shape, x, y);
+      }
     }
   }
 }
@@ -194,14 +185,16 @@ PVector mouseVector() {
   return new PVector(mouseX, mouseY);
 }
 
+
+/**
+* Loops through the sides and draws all the vierticies
+*/
 void drawPoints() {
   fill(0);
-  for(PVector p : horizontalPoints) {
-    ellipse(p.x, p.y, 2, 2);
-  }
-  
-  for(PVector p : verticalPoints) {
-    ellipse(p.x, p.y, 2, 2);
+  for(Side side : Sides[]) {
+    for(PVector p : side.getPoints()) {
+      ellipse(p.x, p.y, 2, 2);
+    }
   }
 }
 
@@ -216,6 +209,10 @@ PShape getShape(ArrayList<PVector> points) {
   s.endShape();
   return s;
 }
+
+
+
+// This is very broken. I suggest scraping it and starting over.
 
 //void save() {
 //  int docWidth = width;

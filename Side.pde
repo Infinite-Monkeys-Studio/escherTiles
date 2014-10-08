@@ -11,6 +11,10 @@ class Side {
     
   }
   
+  ArrayList<PVector> getPoints() {
+    return points;
+  }
+  
   PShape getShape() {
     PShape s = createShape();
     s.beginShape().noFill();
